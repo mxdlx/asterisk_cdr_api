@@ -61,7 +61,7 @@ func barraLlamadasDesde(c *gin.Context) {
   var err error
   var rs []*registro
 
-  id := c.Param("id")
+  id := c.Param("origen")
 
   rows, err := AsteriskDB.Query("SELECT id,start,src,dst,dstchannel,duration,disposition,uniqueid FROM cdr WHERE disposition='ANSWERED' AND src='" + id + "'")
   if err != nil {
@@ -113,7 +113,7 @@ func barraLlamadasFecha(c *gin.Context) {
   var err error
   var rs []*registro
 
-  id := c.Param("id")
+  id := c.Param("fecha")
 
   rows, err := AsteriskDB.Query("SELECT id,start,src,dst,dstchannel,duration,disposition,uniqueid FROM cdr WHERE disposition='ANSWERED' AND start::text LIKE '" + id + "%'")
   if err != nil {
@@ -139,8 +139,8 @@ func barraLlamadasFecha(c *gin.Context) {
 func main() {
   r := gin.Default()
   r.GET("/llamadas", barraLlamadas)
-  //r.GET("/llamadas/id/:id", barraLlamadasId)
-  //r.GET("/llamadas/origen/:id", barraLlamadasDesde)
-  //r.GET("/llamadas/fecha/:id", barraLlamadasFecha)
+  r.GET("/llamadas/id/:id", barraLlamadasId)
+  r.GET("/llamadas/origen/:origen", barraLlamadasDesde)
+  r.GET("/llamadas/fecha/:fecha", barraLlamadasFecha)
   r.Run()
 }
